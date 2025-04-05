@@ -5,6 +5,7 @@ export class SettingsPage extends React.Component {
     return (
       <div className='displayPage'>
         <h1>Settings</h1>
+        <p></p>
       </div>
     );
   }
