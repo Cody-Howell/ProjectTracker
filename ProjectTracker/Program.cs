@@ -13,12 +13,34 @@ builder.Services.AddSingleton<IDbConnection>(provider =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-
 app.UseHttpsRedirection();
+app.UseDefaultFiles();
+app.UseStaticFiles();
+app.UseRouting();
 
 
-app.MapGet("/", () => "Hello world.");
+string folderPath = "/data";
+app.MapGet("/api/documents", () =>
+{
+    string[] files = Directory.GetFiles(folderPath);
+    IEnumerable<string> output = files.Select(a => Path.GetFileName(a));
+    return output;
+});
+
+app.MapGet("/api/doc", (string filename) =>
+{
+    string fullPath = Path.Combine(folderPath, filename);
+
+    if (!File.Exists(fullPath)) {
+        return Results.NotFound("File not found.");
+    }
+
+    string content = File.ReadAllText(fullPath);
+    return Results.Content(content, "text/plain");
+});
+
+
+app.MapFallbackToFile("index.html");
 
 app.Run();
 

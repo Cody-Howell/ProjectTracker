@@ -52,7 +52,6 @@ export class SettingsPage extends React.Component<Record<string, never>, { funct
         <p>Here, adjust two properties: first, you can write a custom score calculator, and second, 
           what tags you have (and what color they display as).
         </p>
-        <button onClick={() => console.log(this.state)}>See State</button>
         <h2>Score Function</h2>
         <p>You have 6 things you can read off of, variables: </p>
         <ol>
