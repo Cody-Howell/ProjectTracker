@@ -1,39 +1,28 @@
 class FunctionService {
-  scoreFunction: string;
+  scoreFunction: Array<number>;
   
   constructor() {
     this.scoreFunction = this.getFunction();
 
   }
 
-  updateFunction(s: string): void {
-    window.localStorage.setItem("scoreFunction", s);
+  updateFunction(s: Array<number>): void {
+    window.localStorage.setItem("scoreFunction", JSON.stringify(s));
     this.scoreFunction = s;
   }
 
   returnValue(PrS: number, PeS: number, DeS: number, DiS: number, SD: number, ED: number): number {
-    let func = this.scoreFunction;
-    let regex = new RegExp('PrS', 'g');
-    func = func.replace(regex, PrS.toString());
-    regex = new RegExp('PeS', 'g');
-    func = func.replace(regex, PeS.toString());
-    regex = new RegExp('DeS', 'g');
-    func = func.replace(regex, DeS.toString());
-    regex = new RegExp('DiS', 'g');
-    func = func.replace(regex, DiS.toString());
-    regex = new RegExp('SD', 'g');
-    func = func.replace(regex, SD.toString());
-    regex = new RegExp('ED', 'g');
-    func = func.replace(regex, ED.toString());
-
-    return Number(eval(func));
+    const weights = this.scoreFunction;
+    return (
+      PrS * weights[0] + PeS * weights[1] + DeS * weights[2] + DiS * weights[3] + SD * weights[4] + ED * weights[5]
+    );
   }
   
-  private getFunction(): string {
+  private getFunction(): Array<number> {
     const value = window.localStorage.getItem("scoreFunction");
     return value == null ? 
-      "PrS + PeS + DeS - DiS + SD - ED" : 
-      value;
+      [1, 1, 1, 1, 1, 1] : 
+      JSON.parse(value);
   }
 }
 
