@@ -48,3 +48,10 @@ th {
   background-color: rgb(177, 177, 177);
   color: black;
 }
+
+.code {
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 0 2px;
+  font-size: large;
+}
