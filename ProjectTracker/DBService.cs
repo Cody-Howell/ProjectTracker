@@ -77,4 +77,11 @@ public class DBService(IDbConnection conn) {
             """";
         conn.Execute(updateType, type);
     }
+
+    public void DeleteType(ProjectType type) {
+        string deleteType = """"
+            delete from types where id = @id
+            """";
+        conn.Execute(deleteType, type);
+    }
 }

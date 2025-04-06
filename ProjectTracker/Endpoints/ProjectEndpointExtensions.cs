@@ -24,6 +24,11 @@ public static class ProjectEndpointExtensions {
             return Results.Ok();
         });
 
+        app.MapPost("/api/types/delete", (ProjectType type, DBService service) => {
+            service.DeleteType(type);
+            return Results.Ok();
+        });
+
 
 
         return app;

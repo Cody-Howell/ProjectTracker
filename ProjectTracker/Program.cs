@@ -20,6 +20,8 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseRouting();
 
+app.MapGet("/api/health", () => "Hello");
+
 app.AddMarkdownEndpoints()
     .AddProjectEndpoints();
 
