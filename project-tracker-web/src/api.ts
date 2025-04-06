@@ -7,29 +7,37 @@ async function getResponse(path: string): Promise<string> {
     }
 
     return await response.text();
-  } catch (error: any) {
-    console.error(error.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    } else {
+      console.error("An unknown error occurred");
+    }
     return "";
   }
 }
 
-async function postResponse(path: string, obj: any): Promise<string> {
+async function postResponse(path: string, obj: object): Promise<string> {
   const url = "/api";
   try {
     const response = await fetch(url + path, {
       method: "POST",
       headers: {
-        "Content-Type": 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(obj)
+      body: JSON.stringify(obj),
     });
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
 
     return await response.text();
-  } catch (error: any) {
-    console.error(error.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    } else {
+      console.error("An unknown error occurred");
+    }
     return "";
   }
 }
@@ -49,8 +57,12 @@ async function patchResponse(path: string, obj: object): Promise<string> {
     }
 
     return await response.text();
-  } catch (error: any) {
-    console.error(error.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    } else {
+      console.error("An unknown error occurred");
+    }
     return "";
   }
 }
