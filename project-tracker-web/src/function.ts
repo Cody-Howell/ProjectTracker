@@ -3,7 +3,6 @@ class FunctionService {
   
   constructor() {
     this.scoreFunction = this.getFunction();
-
   }
 
   updateFunction(s: Array<number>): void {

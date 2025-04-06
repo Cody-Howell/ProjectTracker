@@ -1,6 +1,50 @@
-@ProjectTracker_HostAddress = http://localhost:5032
+@ProjectTracker = https://localhost:7231
 
-GET {{ProjectTracker_HostAddress}}/weatherforecast/
-Accept: application/json
-
+###
+GET {{ProjectTracker}}/api/projects
+###
+GET {{ProjectTracker}}/api/project?title=Lorem%20Project%202
+###
+GET {{ProjectTracker}}/api/types
+###
+POST {{ProjectTracker}}/api/project
+Content-Type: application/json
+{
+  "projectTitle": "Lorem Project 2",
+  "projectStatus": "Planning",
+  "professionalScore": 40,
+  "personalScore": 20,
+  "developmentScore": 60,
+  "difficultyScore": 10,
+  "startDate": "2025-04-06T15:00:00",
+  "expectedDate": "2025-04-15T08:00:00",
+  "hoursExpected": 15,
+  "types": [
+    {
+      "id": 1,
+      "typeName": "Lorem",
+      "color": "#fe0000"
+    },
+    {
+      "id": 2,
+      "typeName": "lksjdogij",
+      "color": "#00ff00"
+    }
+  ]
+}
+###
+POST {{ProjectTracker}}/api/types
+Content-Type: application/json
+{
+  "typename": "Whaddup", 
+  "color": "#00ff00"
+}
+###
+PATCH {{ProjectTracker}}/api/types
+Content-Type: application/json
+{
+  "id": 2,
+  "typename": "lksjdogij", 
+  "color": "#00ff00"
+}
 ###

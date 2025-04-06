@@ -7,13 +7,14 @@ create table projects (
   scoreDevelopment int not null, 
   scoreDifficulty int not null, 
   hoursExpected int not null, 
+  startDate timestamp not null,
   expectedDate timestamp not null
 );
 
 create table types (
   id int generated always as identity unique not null, 
   typeName varchar(80) not null, 
-  color varchar(6) not null
+  color varchar(7) not null
 );
 
 create table project_type (
@@ -34,9 +35,9 @@ create table sessions (
 );
 
 insert into projects 
-	(projecttitle, projectstatus, scoreprofessional, scorepersonal, scoredevelopment, scoredifficulty, hoursexpected, expecteddate) values 
-	('Lorem Project', 'Planning', 67, 30, 40, 14, 20, '2025-04-01 15:00:00');
-insert into types (typeName, color) values ('Lorem', 'fe0000');
+	(projecttitle, projectstatus, scoreprofessional, scorepersonal, scoredevelopment, scoredifficulty, hoursexpected, expecteddate, startDate) values 
+	('Lorem Project', 'Planning', 67, 30, 40, 14, 20, '2025-04-01 15:00:00', '2025-03-01 15:00:00');
+insert into types (typeName, color) values ('Lorem', '#fe0000');
 insert into project_type (projectId, typeId) values (1, 1);
 insert into sessions 
   (projectId, dateTracked, planningSeconds, implementingSeconds, debuggingSeconds, testingSeconds, additionalNotes) values 

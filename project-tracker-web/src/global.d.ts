@@ -1,4 +1,4 @@
-type TimeTrackRecord = {
+type Project = {
   id: number, 
   projectTitle: string, 
   projectStatus: string, 
@@ -8,5 +8,12 @@ type TimeTrackRecord = {
   scoreDifficulty: number, 
   hoursExpected: number, 
   expectedDate: Date, 
+  types: Array<ProjectType>
+}
+
+type ProjectType = {
+  id: number, 
+  typeName: string, 
+  color: sring
 }
 
