@@ -18,7 +18,7 @@ export class SettingsPage extends React.Component<Record<string, never>, { funct
     this.setState({saved: true});
     setTimeout(() => {
       this.setState({saved: false});
-    }, 2000);
+    }, 3000);
   }
 
   render() {
@@ -31,7 +31,7 @@ export class SettingsPage extends React.Component<Record<string, never>, { funct
       [80, 74, 81, 32, 14, 4],
       [92, 76, 64, 44, 46, 6],
       [75, 62, 92, 17, 16, 8],
-      [53, 82, 79, 22, 26, 8]
+      [53, 82, 79, 22, 50, 30]
     ];
     const functionDisplay: React.ReactNode[] = functionNumbers.map((v, index) => {
       return (<tr key={index}>
@@ -107,7 +107,7 @@ export class SettingsPage extends React.Component<Record<string, never>, { funct
         <hr />
         <h2>Tags</h2>
         <p>Here are all your current tags; you can choose to delete them, which will remove all references in
-          existing projects, update them directly (either by color or name), and you can also make new ones using the inputs below.
+          existing projects, update them directly (color and/or name), and you can also make new ones using the inputs below.
         </p>
       </div>
     );
