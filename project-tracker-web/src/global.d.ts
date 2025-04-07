@@ -2,11 +2,13 @@ type Project = {
   id: number, 
   projectTitle: string, 
   projectStatus: string, 
-  scoreProfessional: number, 
-  scorePersonal: number, 
-  scoreDevelopment: number, 
-  scoreDifficulty: number, 
+  percentComplete: number,
+  professionalScore: number, 
+  personalScore: number, 
+  developmentScore: number, 
+  difficultyScore: number, 
   hoursExpected: number, 
+  startDate: Date,
   expectedDate: Date, 
   types: Array<ProjectType>
 }

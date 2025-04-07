@@ -1,6 +1,16 @@
 import React from 'react';
+import { getAllProjects } from '../api';
+import func from '../function.ts';
 
-export class HomePage extends React.Component {
+export class HomePage extends React.Component<Record<string, never>, { projects: Array<Project> }> {
+  state = {
+    projects: []
+  }
+
+  async componentDidMount(): Promise<void> {
+    this.setState({ projects: await getAllProjects() })
+  }
+
   render() {
     return (
       <div className='displayPage'>
@@ -19,23 +29,31 @@ export class HomePage extends React.Component {
               <th>Tags</th>
               <th>Calculated Score</th>
               <th>Percent Complete</th>
-              <th>Lorem</th>
-              <th>Lorem</th>
-              <th>Lorem</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Lorem</td>
-              <td>Lorem</td>
-              <td>Lorem</td>
-              <td>Lorem</td>
-              <td>Lorem</td>
-              <td>Lorem</td>
-            </tr>
+            {this.state.projects.map((v: Project, i) =>
+              <tr>
+                <td>{v.projectTitle}</td>
+                <td>{v.projectStatus}</td>
+                <td>{v.types.map((v2: ProjectType, i2) => 
+                  <p key={i * 1000 + i2} style={{backgroundColor: `${v2.color}`, border: "1px solid white", borderRadius: "5px", padding: "5px"}}>{v2.typeName}</p>
+                  )}</td>
+                <td>{func.returnValue(v.professionalScore, v.personalScore, v.developmentScore, v.difficultyScore, TimeAfter(new Date(v.startDate)), TimeAfter(new Date(v.expectedDate)))}</td>
+                <td>{v.percentComplete}%</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
     );
   }
+}
+
+function TimeAfter(date: Date): number {
+  const current = new Date();
+  const timeDifferenceMs = current.getTime() - date.getTime();
+  const days = Math.floor(timeDifferenceMs / (1000 * 60 * 60 * 24));
+  
+  return days > 0 ? days : 0;
 }

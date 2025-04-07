@@ -40,6 +40,22 @@ public class DBService(IDbConnection conn) {
         return conn.Query<IdAndTitleDTO>(getProjectNames);
     }
 
+    public IEnumerable<Project> GetAllProjects() {
+        string getProjects = """"
+            select * from projects
+            """";
+        IEnumerable<Project> projects = conn.Query<Project>(getProjects);
+        foreach (Project p in projects) {
+            string types = """"
+            select t.id, typename, color from types t 
+            inner join project_type pt on (pt.typeid = t.id)
+            where pt.projectid = @id
+            """";
+            p.Types = conn.Query<ProjectType>(types, new { id = p.Id }).ToList();
+        }
+        return projects;
+    }
+
     public Project GetProject(int id) {
         string getProject = """"
             select * from projects where id = @id
@@ -116,4 +132,5 @@ public class DBService(IDbConnection conn) {
             """";
         return conn.Query<Session>(getSessions, new { id });
     }
+
 }

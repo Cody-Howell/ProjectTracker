@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { getAllProjects, getSessions } from '../api';
+import { getAllProjectNames, getSessions } from '../api';
 
 type SessionPageState = {
   projects: Array<{ id: number, projectTitle: string }>,
@@ -25,7 +25,7 @@ export class SessionPage extends React.Component<Record<string, never>, SessionP
   }
 
   async componentDidMount(): Promise<void> {
-    this.setState({ projects: await getAllProjects() });
+    this.setState({ projects: await getAllProjectNames() });
   }
 
   updateProjectSelector = async (e: ChangeEvent<HTMLSelectElement>): Promise<void> => {

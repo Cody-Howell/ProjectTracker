@@ -1,6 +1,8 @@
 @ProjectTracker = https://localhost:7231
 
 ###
+GET {{ProjectTracker}}/api/projects/names
+###
 GET {{ProjectTracker}}/api/projects
 ###
 GET {{ProjectTracker}}/api/project?id=1

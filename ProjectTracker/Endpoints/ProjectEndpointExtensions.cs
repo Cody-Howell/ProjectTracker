@@ -4,7 +4,8 @@ using System.Drawing;
 
 public static class ProjectEndpointExtensions { 
     public static WebApplication AddProjectEndpoints(this WebApplication app) {
-        app.MapGet("/api/projects", (DBService service) => service.GetAllProjectNames());
+        app.MapGet("/api/projects/names", (DBService service) => service.GetAllProjectNames());
+        app.MapGet("/api/projects", (DBService service) => service.GetAllProjects());
         app.MapGet("/api/types", (DBService service) => service.GetAllTypes());
         app.MapGet("/api/project", (int id, DBService service) => service.GetProject(id));
 

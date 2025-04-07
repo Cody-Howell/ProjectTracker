@@ -92,7 +92,12 @@ export async function deleteType(type: ProjectType): Promise<void> {
 }
 //#endregion 
 //#region Sessions
-export async function getAllProjects(): Promise<Array<{id: number, projectTitle: string}>> {
+export async function getAllProjectNames(): Promise<Array<{id: number, projectTitle: string}>> {
+  const vals = await getResponse("/projects/names");
+  return JSON.parse(vals);
+}
+
+export async function getAllProjects(): Promise<Array<Project>> {
   const vals = await getResponse("/projects");
   return JSON.parse(vals);
 }
