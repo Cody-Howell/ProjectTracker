@@ -4,6 +4,7 @@ public class Project {
     public int Id { get; set; }
     public string ProjectTitle { get; set; } = "";
     public string ProjectStatus { get; set; } = "";
+    public int PercentComplete { get; set; }
     public int ProfessionalScore { get; set; }
     public int PersonalScore { get; set; }
     public int DevelopmentScore { get; set; }

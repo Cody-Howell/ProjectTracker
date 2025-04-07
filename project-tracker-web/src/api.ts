@@ -1,3 +1,4 @@
+//#region HTTP Calls
 async function getResponse(path: string): Promise<string> {
   const url = "/api";
   try {
@@ -66,11 +67,13 @@ async function patchResponse(path: string, obj: object): Promise<string> {
     return "";
   }
 }
+//#endregion
 
 export async function seeHealthCheck(): Promise<void> {
   console.log(await getResponse("/health"));
 }
 
+//#region Types
 export async function getAllTypes(): Promise<Array<ProjectType>> {
   const vals = await getResponse("/types");
   return JSON.parse(vals);
@@ -87,3 +90,17 @@ export async function updateType(type: ProjectType): Promise<void> {
 export async function deleteType(type: ProjectType): Promise<void> {
   await postResponse("/types/delete", type);
 }
+//#endregion 
+//#region Sessions
+export async function getAllProjects(): Promise<Array<{id: number, projectTitle: string}>> {
+  const vals = await getResponse("/projects");
+  return JSON.parse(vals);
+}
+
+export async function getSessions(id: number): Promise<Array<Session>> {
+  const vals = await getResponse("/sessions?id=" + id);
+  return JSON.parse(vals);
+}
+
+//#endregion
+

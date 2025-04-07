@@ -3,7 +3,7 @@
 ###
 GET {{ProjectTracker}}/api/projects
 ###
-GET {{ProjectTracker}}/api/project?title=Lorem%20Project%202
+GET {{ProjectTracker}}/api/project?id=1
 ###
 GET {{ProjectTracker}}/api/types
 ###
@@ -47,4 +47,6 @@ Content-Type: application/json
   "typename": "lksjdogij", 
   "color": "#00ff00"
 }
+###
+GET {{ProjectTracker}}/api/sessions?id=1
 ###

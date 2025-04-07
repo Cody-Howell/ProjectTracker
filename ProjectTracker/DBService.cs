@@ -5,6 +5,7 @@ using Dapper;
 namespace ProjectTracker;
 
 public class DBService(IDbConnection conn) {
+    #region Projects
     public void CreateProject(Project project) {
         string projectAddition = """"
             insert into projects 
@@ -32,18 +33,18 @@ public class DBService(IDbConnection conn) {
         }
     }
 
-    public IEnumerable<string> GetAllProjectNames() {
+    public IEnumerable<IdAndTitleDTO> GetAllProjectNames() {
         string getProjectNames = """"
-            select projectTitle from projects
+            select id, projectTitle from projects
             """";
-        return conn.Query<string>(getProjectNames);
+        return conn.Query<IdAndTitleDTO>(getProjectNames);
     }
 
-    public Project GetProject(string projectTitle) {
+    public Project GetProject(int id) {
         string getProject = """"
-            select * from projects where projecttitle = @projectTitle
+            select * from projects where id = @id
             """";
-        Project p = conn.QuerySingle<Project>(getProject, new { projectTitle });
+        Project p = conn.QuerySingle<Project>(getProject, new { id });
 
         string types = """"
             select t.id, typename, color from types t 
@@ -54,6 +55,27 @@ public class DBService(IDbConnection conn) {
         return p;
     }
 
+    public void UpdateProjectStatus(Project project) {
+        string update = """"
+            update projects p set projectstatus = @ProjectStatus, 
+                percentcomplete = @PercentComplete 
+                where p.id = @Id
+            """";
+        conn.Execute(update, new { project.Id, project.ProjectStatus, project.PercentComplete });
+    }
+
+    public int GetTotalSeconds(int projectId) {
+        string allSeconds = """"
+            select SUM(planningseconds) + SUM(implementingseconds) + SUM(debuggingseconds) + SUM(testingseconds)
+            from sessions
+            where projectid = @projectId
+            group by projectid;
+            """";
+        return conn.QuerySingle<int>(allSeconds, new { projectId });
+    }
+    #endregion
+
+    #region Types
     public void CreateType(ProjectType type) {
         string createType = """"
             insert into types (typeName, color) values (@typeName, @color)
@@ -83,5 +105,15 @@ public class DBService(IDbConnection conn) {
             delete from types where id = @id
             """";
         conn.Execute(deleteType, type);
+    }
+    #endregion
+
+    public IEnumerable<Session> GetSessions(int id) {
+        string getSessions = """"
+            select id, projectId, dateTracked, planningSeconds, implementingseconds, 
+                debuggingseconds, testingseconds, additionalnotes  
+                from sessions s where id = @id
+            """";
+        return conn.Query<Session>(getSessions, new { id });
     }
 }

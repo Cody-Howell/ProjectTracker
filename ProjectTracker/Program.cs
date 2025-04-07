@@ -1,5 +1,6 @@
 using ProjectTracker;
 using ProjectTracker.Classes;
+using ProjectTracker.Endpoints;
 using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,7 +24,8 @@ app.UseRouting();
 app.MapGet("/api/health", () => "Hello");
 
 app.AddMarkdownEndpoints()
-    .AddProjectEndpoints();
+    .AddProjectEndpoints()
+    .AddSessionEndpoints();
 
 app.MapFallbackToFile("index.html");
 

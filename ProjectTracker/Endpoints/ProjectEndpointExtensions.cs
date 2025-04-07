@@ -6,7 +6,7 @@ public static class ProjectEndpointExtensions {
     public static WebApplication AddProjectEndpoints(this WebApplication app) {
         app.MapGet("/api/projects", (DBService service) => service.GetAllProjectNames());
         app.MapGet("/api/types", (DBService service) => service.GetAllTypes());
-        app.MapGet("/api/project", (string title, DBService service) => service.GetProject(title));
+        app.MapGet("/api/project", (int id, DBService service) => service.GetProject(id));
 
 
         app.MapPost("/api/project", (Project project, DBService service) => {
@@ -29,7 +29,10 @@ public static class ProjectEndpointExtensions {
             return Results.Ok();
         });
 
-
+        app.MapPatch("/api/projects", (Project project, DBService service) => {
+            service.UpdateProjectStatus(project);
+            return Results.Ok();
+        });
 
         return app;
     }

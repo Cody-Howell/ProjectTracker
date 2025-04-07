@@ -17,3 +17,13 @@ type ProjectType = {
   color: sring
 }
 
+type Session = {
+  id: number,
+  projectId: number, 
+  dateTracked: Date, 
+  planningSeconds: number, 
+  implementingSeconds: number, 
+  debuggingSeconds: number, 
+  testingSeconds: number, 
+  additionalNotes: number
+}
