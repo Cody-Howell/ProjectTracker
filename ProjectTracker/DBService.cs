@@ -124,13 +124,26 @@ public class DBService(IDbConnection conn) {
     }
     #endregion
 
+    #region Sessions
     public IEnumerable<Session> GetSessions(int id) {
         string getSessions = """"
             select id, projectId, dateTracked, planningSeconds, implementingseconds, 
-                debuggingseconds, testingseconds, additionalnotes  
-                from sessions s where id = @id
+                debuggingseconds, testingseconds, documentationseconds, additionalnotes  
+                from sessions s where projectId = @id
+                order by 3 desc
             """";
         return conn.Query<Session>(getSessions, new { id });
     }
 
+    public void AddSession(Session s) {
+        string addSession = """"
+            insert into sessions (projectId, dateTracked, planningSeconds, implementingseconds, 
+                debuggingseconds, testingseconds, documentationseconds, additionalnotes)
+                values
+                (@projectId, @dateTracked, @planningSeconds, @implementingseconds, 
+                @debuggingseconds, @testingseconds, @documentationseconds, @additionalnotes)
+            """";
+        conn.Execute(addSession, s);
+    }
+    #endregion
 }

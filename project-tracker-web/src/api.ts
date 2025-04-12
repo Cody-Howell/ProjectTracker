@@ -1,6 +1,6 @@
+const url = "/api";
 //#region HTTP Calls
 async function getResponse(path: string): Promise<string> {
-  const url = "/api";
   try {
     const response = await fetch(url + path);
     if (!response.ok) {
@@ -19,7 +19,6 @@ async function getResponse(path: string): Promise<string> {
 }
 
 async function postResponse(path: string, obj: object): Promise<string> {
-  const url = "/api";
   try {
     const response = await fetch(url + path, {
       method: "POST",
@@ -44,7 +43,6 @@ async function postResponse(path: string, obj: object): Promise<string> {
 }
 
 async function patchResponse(path: string, obj: object): Promise<string> {
-  const url = "/api";
   try {
     const response = await fetch(url + path, {
       method: "PATCH",
@@ -107,5 +105,8 @@ export async function getSessions(id: number): Promise<Array<Session>> {
   return JSON.parse(vals);
 }
 
+export async function submitSession(session: Session): Promise<void> {
+  await postResponse("/sessions", session);
+}
 //#endregion
 

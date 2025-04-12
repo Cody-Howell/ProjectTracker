@@ -27,5 +27,8 @@ type Session = {
   implementingSeconds: number, 
   debuggingSeconds: number, 
   testingSeconds: number, 
-  additionalNotes: number
+  documentationSeconds: number, 
+  additionalNotes: string
 }
+
+type CurrentTimer = "" | "plan" | "impl" | "debug" | "test" | "docs";

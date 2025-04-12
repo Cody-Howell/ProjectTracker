@@ -1,6 +1,7 @@
 import React from 'react';
 import { getAllProjects } from '../api';
 import func from '../function.ts';
+import { TimeAfter } from '../funcs/TimeAfter.ts';
 
 export class HomePage extends React.Component<Record<string, never>, { projects: Array<Project> }> {
   state = {
@@ -37,7 +38,7 @@ export class HomePage extends React.Component<Record<string, never>, { projects:
                 <td>{v.projectTitle}</td>
                 <td>{v.projectStatus}</td>
                 <td>{v.types.map((v2: ProjectType, i2) => 
-                  <p key={i * 1000 + i2} style={{backgroundColor: `${v2.color}`, border: "1px solid white", borderRadius: "5px", padding: "5px"}}>{v2.typeName}</p>
+                  <p key={i * 1000 + i2} style={{backgroundColor: `${v2.color}`, border: "1px solid white", borderRadius: "5px", padding: "5px", margin: "1px"}}>{v2.typeName}</p>
                   )}</td>
                 <td>{func.returnValue(v.professionalScore, v.personalScore, v.developmentScore, v.difficultyScore, TimeAfter(new Date(v.startDate)), TimeAfter(new Date(v.expectedDate)))}</td>
                 <td>{v.percentComplete}%</td>
@@ -50,10 +51,3 @@ export class HomePage extends React.Component<Record<string, never>, { projects:
   }
 }
 
-function TimeAfter(date: Date): number {
-  const current = new Date();
-  const timeDifferenceMs = current.getTime() - date.getTime();
-  const days = Math.floor(timeDifferenceMs / (1000 * 60 * 60 * 24));
-  
-  return days > 0 ? days : 0;
-}

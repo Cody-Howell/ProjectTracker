@@ -9,7 +9,7 @@ public class Project {
     public int PersonalScore { get; set; }
     public int DevelopmentScore { get; set; }
     public int DifficultyScore { get; set; }
-    public int HoursExpected { get; set; }
+    public int HoursExpected { get; set; } 
     public DateTime StartDate { get; set; }
     public DateTime ExpectedDate { get; set; }
     public List<ProjectType> Types { get; set; } = new();

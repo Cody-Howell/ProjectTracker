@@ -8,5 +8,6 @@ public class Session {
     public int ImplementingSeconds { get; set; }
     public int DebuggingSeconds { get; set; }
     public int TestingSeconds { get; set; }
+    public int DocumentationSeconds { get; set; }
     public string AdditionalNotes { get; set; } = "";
 }

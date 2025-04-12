@@ -32,6 +32,7 @@ create table sessions (
   implementingSeconds int not null, 
   debuggingSeconds int not null, 
   testingSeconds int not null,
+  documentationSeconds int not null,
   additionalNotes varchar(300) null
 );
 
@@ -47,8 +48,11 @@ insert into project_type (projectId, typeId) values (1, 1);
 insert into project_type (projectId, typeId) values (2, 1);
 insert into project_type (projectId, typeId) values (2, 2);
 insert into sessions 
-  (projectId, dateTracked, planningSeconds, implementingSeconds, debuggingSeconds, testingSeconds, additionalNotes) values 
-  (1, '2025-04-05 15:00:00', 1600, 300, 10, 1, null);
+  (projectId, dateTracked, planningSeconds, implementingSeconds, debuggingSeconds, testingSeconds, documentationSeconds, additionalNotes) values 
+  (1, '2025-04-05 15:00:00', 1600, 300, 10, 1, 30, null);
 insert into sessions 
-  (projectId, dateTracked, planningSeconds, implementingSeconds, debuggingSeconds, testingSeconds, additionalNotes) values 
-  (2, '2025-04-05 15:00:00', 1600, 3040, 274, 1098, 'null');
+  (projectId, dateTracked, planningSeconds, implementingSeconds, debuggingSeconds, testingSeconds, documentationSeconds, additionalNotes) values 
+  (2, '2025-04-05 15:00:00', 1600, 3040, 274, 1098, 30, null);
+insert into sessions 
+  (projectId, dateTracked, planningSeconds, implementingSeconds, debuggingSeconds, testingSeconds, documentationSeconds, additionalNotes) values 
+  (2, '2025-04-08 15:00:00', 400, 30, 300, 1098, 180, null);
