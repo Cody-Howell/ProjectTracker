@@ -31,4 +31,9 @@ type Session = {
   additionalNotes: string
 }
 
+type MarkdownDocument = {
+    filename: string,
+    MDText: string
+}
+
 type CurrentTimer = "" | "plan" | "impl" | "debug" | "test" | "docs";

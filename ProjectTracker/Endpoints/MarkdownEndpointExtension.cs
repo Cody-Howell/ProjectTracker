@@ -9,7 +9,7 @@ public static class MarkdownEndpointExtension {
             string[] files = Directory.GetFiles(folderPath);
             IEnumerable<string> output = files.Select(a => Path.GetFileName(a));
             if (projectName != "") {
-                output = output.Where(a => a.Contains(projectName));
+                output = output.Where(a => a.Contains(projectName.Replace(' ', '-')));
             }
             return output;
         });
@@ -23,6 +23,14 @@ public static class MarkdownEndpointExtension {
 
             string content = File.ReadAllText(fullPath);
             return Results.Content(content, "text/plain");
+        });
+
+        app.MapPost("/api/doc/new", (string filename, string project) => {
+            string finalName = project.Replace(' ', '-') + "_" + filename.Replace(' ', '-');
+
+            // Create file here
+            File.Create(Path.Combine(folderPath, finalName));
+            return Results.Ok(finalName);
         });
 
         app.MapPost("api/doc", (MarkdownDocument doc) => {

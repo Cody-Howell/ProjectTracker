@@ -133,4 +133,19 @@ export async function deleteSession(session: Session): Promise<void> {
   await deleteResponse("/sessions?id=" + session.id);
 }
 //#endregion
+//#region Markdown
+export async function getAllDocuments(): Promise<Array<string>> {
+  const vals = await getResponse("/documents");
+  return JSON.parse(vals);
+}
 
+export async function getDocument(filename: string): Promise<string> {
+  return await getResponse("/doc?filename=" + filename);
+}
+
+export async function createDocument(filename: string, project: string): Promise<string> {
+  return await postResponse("/doc", {filename: filename, project: project});
+}
+
+
+//#endregion

@@ -16,7 +16,6 @@ builder.Services.AddSingleton<DBService>();
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseRouting();
