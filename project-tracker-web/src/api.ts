@@ -65,6 +65,26 @@ async function patchResponse(path: string, obj: object): Promise<string> {
     return "";
   }
 }
+
+async function deleteResponse(path: string): Promise<string> {
+  try {
+    const response = await fetch(url + path, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    return await response.text();
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    } else {
+      console.error("An unknown error occurred");
+    }
+    return "";
+  }
+}
 //#endregion
 
 export async function seeHealthCheck(): Promise<void> {
@@ -107,6 +127,10 @@ export async function getSessions(id: number): Promise<Array<Session>> {
 
 export async function submitSession(session: Session): Promise<void> {
   await postResponse("/sessions", session);
+}
+
+export async function deleteSession(session: Session): Promise<void> {
+  await deleteResponse("/sessions?id=" + session.id);
 }
 //#endregion
 

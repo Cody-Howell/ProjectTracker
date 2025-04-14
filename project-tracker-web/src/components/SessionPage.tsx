@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { getAllProjectNames, getSessions, submitSession } from '../api';
+import { deleteSession, getAllProjectNames, getSessions, submitSession } from '../api';
 
 type SessionPageState = {
   projects: Array<{ id: number, projectTitle: string }>,
@@ -57,9 +57,8 @@ export class SessionPage extends React.Component<Record<string, never>, SessionP
 
   startNewSection = (type: CurrentTimer): void => {
     if (this.state.timeStarted === null) { this.setState({ timeStarted: new Date(), currentTimer: type }); return; };
-    console.log(this.state.timeStarted.getTime());
+
     const currentSeconds = Math.round((new Date().getTime() - this.state.timeStarted.getTime()) / 1000);
-    console.log(currentSeconds);
     this.updateSeconds(this.state.currentTimer, currentSeconds);
 
     // If the same, stop the timer.  
@@ -98,6 +97,14 @@ export class SessionPage extends React.Component<Record<string, never>, SessionP
       additionalNotes: this.state.additionalNotes
     }
     await submitSession(newSession);
+
+    window.location.reload();
+  }
+
+  deleteSession = async (s: Session): Promise<void> => {
+    await deleteSession(s);
+
+    window.location.reload();
   }
 
   render() {
@@ -129,6 +136,7 @@ export class SessionPage extends React.Component<Record<string, never>, SessionP
         <p>Select what project you're going to add your session to, and once selected, you can
           scroll to the bottom and review all the sessions you've done so far on this project.
         </p>
+        <button onClick={() => console.log(this.state)}>See State</button>
         <select value={this.state.projectId} onChange={this.updateProjectSelector}>
           <option value={undefined}></option>
           {this.state.projects.map((v: { id: number, projectTitle: string }, i) => <option key={i} value={v.id}>{v.projectTitle}</option>)}
@@ -182,15 +190,18 @@ export class SessionPage extends React.Component<Record<string, never>, SessionP
             </ul>
 
             <h2>Previous Sessions</h2>
-            {this.state.sessions.map((v: Session, i) =>
-              <div key={i + "session"} className='sessionDisplay'>
+            {this.state.sessions.map((v: Session) =>
+              <div key={v.id + "session"} className='sessionDisplay'>
                 <p>Total Time (mins): {Math.round((v.planningSeconds + v.implementingSeconds + v.debuggingSeconds + v.testingSeconds) / 60)}</p>
-                <p>Date Tracked: {new Date(v.dateTracked).toLocaleString()}</p>
+                <p>Date Tracked: {new Date(v.dateTracked + "Z").toLocaleString()}</p>
                 <p>Planning: {v.planningSeconds}</p>
                 <p>Implementing: {v.implementingSeconds}</p>
                 <p>Debugging: {v.debuggingSeconds}</p>
                 <p>Testing: {v.testingSeconds}</p>
                 <p style={{ gridColumn: "span 2" }}>Notes: {v.additionalNotes}</p>
+                <button 
+                  style={{gridColumn: "span 2", backgroundColor: "red"}}
+                  onDoubleClick={() => this.deleteSession(v)}>Delete (double-click)</button>
               </div>
             )}
           </>

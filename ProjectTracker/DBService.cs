@@ -145,5 +145,12 @@ public class DBService(IDbConnection conn) {
             """";
         conn.Execute(addSession, s);
     }
+
+    public void DeleteSession(int id) {
+        string deleteSession = """"
+            delete from sessions where id = @id
+            """";
+        conn.Execute(deleteSession, new { id });
+    }
     #endregion
 }
