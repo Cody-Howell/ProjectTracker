@@ -14,17 +14,7 @@ public class DBService(IDbConnection conn) {
             returning id
             """";
         // Added to the query above to return the id of the inserted project
-        int newId = conn.QuerySingle<int>(projectAddition, new {
-            projecttitle = project.ProjectTitle,
-            projectstatus = project.ProjectStatus,
-            scoreprofessional = project.ProfessionalScore,
-            scorepersonal = project.PersonalScore,
-            scoredevelopment = project.DevelopmentScore,
-            scoredifficulty = project.DifficultyScore,
-            hoursexpected = project.HoursExpected,
-            expecteddate = project.ExpectedDate,
-            startdate = project.StartDate
-        });
+        int newId = conn.QuerySingle<int>(projectAddition, new { project });
         foreach (int id in project.Types.Select(a => a.Id)) {
             string taskAddition = """"
                 insert into project_type (projectId, typeId) values (@newId, @typeId)

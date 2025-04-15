@@ -1,4 +1,15 @@
-@ProjectTracker = https://localhost:4110
+@ProjectTracker = https://localhost:7231
 
 ###
 GET {{ProjectTracker}}/api/documents
+###
+GET {{ProjectTracker}}/api/doc?filename=Project-2_Lorem-2.md
+###
+POST {{ProjectTracker}}/api/doc/new?filename=Lorem%202&project=Project%202
+###
+POST {{ProjectTracker}}/api/doc
+Content-Type: application/json
+{
+  "Filename": "Project-2_Lorem-2.md", 
+  "MDText": "Lorem ipsum text\nLorem"
+}

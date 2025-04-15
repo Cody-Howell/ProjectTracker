@@ -1,9 +1,10 @@
-﻿using ProjectTracker.Classes;
+﻿using Microsoft.AspNetCore.Mvc;
+using ProjectTracker.Classes;
 using System.Data;
 
 public static class MarkdownEndpointExtension {
     public static WebApplication AddMarkdownEndpoints(this WebApplication app) {
-        string folderPath = "/data";
+        string folderPath = app.Configuration["folderPath"] ?? throw new Exception("Please specify the folder path.");
 
         app.MapGet("/api/documents", (string projectName = "") => {
             string[] files = Directory.GetFiles(folderPath);
@@ -26,16 +27,16 @@ public static class MarkdownEndpointExtension {
         });
 
         app.MapPost("/api/doc/new", (string filename, string project) => {
-            string finalName = project.Replace(' ', '-') + "_" + filename.Replace(' ', '-');
+            string finalName = project.Replace(' ', '-') + "_" + filename.Replace(' ', '-') + ".md";
 
-            // Create file here
-            File.Create(Path.Combine(folderPath, finalName));
+            // Create file here, then close the stream
+            File.Create(Path.Combine(folderPath, finalName)).Close();
             return Results.Ok(finalName);
         });
 
         app.MapPost("api/doc", (MarkdownDocument doc) => {
             File.WriteAllText(Path.Combine(folderPath, doc.Filename), doc.MDText);
-            return Results.Created();
+            return Results.Ok();
         });
 
         return app;

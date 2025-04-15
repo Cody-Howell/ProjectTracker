@@ -149,3 +149,10 @@ export async function createDocument(filename: string, project: string): Promise
 
 
 //#endregion
+//#region Projects
+export async function createProject(project: Project): Promise<Project> {
+  const vals = await postResponse("/project", { project: project });
+  return JSON.parse(vals);
+}
+
+//#endregion
