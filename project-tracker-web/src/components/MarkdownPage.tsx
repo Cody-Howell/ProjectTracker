@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { getAllProjectNames, getDocument, getProjectDocs } from '../api';
+import { getAllProjectNames, getDocument, getProjectDocs, updateDocument } from '../api';
 import markdownit from 'markdown-it';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
@@ -17,7 +17,8 @@ type MarkdownPageState = {
   fileNames: Array<string>,
   currentFile: string | null,
   currentText: string | null,
-  displayMarkdown: boolean
+  displayMarkdown: boolean, 
+  updatedApi: boolean
 }
 
 export class MarkdownPage extends React.Component<Record<string, never>, MarkdownPageState> {
@@ -27,7 +28,8 @@ export class MarkdownPage extends React.Component<Record<string, never>, Markdow
     fileNames: [],
     currentFile: null,
     currentText: null,
-    displayMarkdown: false
+    displayMarkdown: false, 
+    updatedApi: false
   }
 
   async componentDidMount(): Promise<void> {
@@ -48,12 +50,31 @@ export class MarkdownPage extends React.Component<Record<string, never>, Markdow
   updateCurrentProject = async (e: ChangeEvent<HTMLSelectElement>): Promise<void> => {
     const filename = e.target.value;
 
+    if (filename === "") {
+      this.setState({ currentFile: null, currentText: null });
+      return;
+    }
+
     const fileText = await getDocument(filename);
     this.setState({ currentFile: filename, currentText: fileText });
   }
 
   toggleDisplay = (): void => {
     this.setState({ displayMarkdown: !this.state.displayMarkdown });
+  }
+
+  updateFile = (e: ChangeEvent<HTMLTextAreaElement>): void => {
+    this.setState({ currentText: e.target.value });
+  }
+
+  updateAPIFile = async (): Promise<void> => {
+    if (this.state.currentFile === null || this.state.currentText === null) return;
+
+    await updateDocument(this.state.currentFile, this.state.currentText);
+    this.setState({updatedApi: true});
+    setTimeout(() => {
+      this.setState({updatedApi: false});
+    }, 2000);
   }
 
   render() {
@@ -92,12 +113,19 @@ export class MarkdownPage extends React.Component<Record<string, never>, Markdow
           <>
             <hr />
             <p>Current file: {this.state.currentFile}</p>
-            <button onClick={this.toggleDisplay}>{this.state.displayMarkdown ? "Edit" : "Display"}</button> <br />
+            <button onClick={this.toggleDisplay} style={{padding: "6px"}}>{this.state.displayMarkdown ? "Edit" : "Display"}</button> <br />
             <hr />
             {this.state.displayMarkdown ? (
               <div dangerouslySetInnerHTML={{ __html: result }} />
             ) : (
-              <textarea value={this.state.currentText} style={{ height: "300px", width: "80%", fontFamily: "Inter" }} />
+              <>
+                <textarea value={this.state.currentText}
+                  style={{ height: "300px", width: "80%", fontFamily: "Inter" }}
+                  onChange={this.updateFile} />
+                <br />
+                <button onClick={this.updateAPIFile}>Update File</button>
+                {this.state.updatedApi && (<p>File updated!</p>)}
+              </>
             )}
           </>
         )}
