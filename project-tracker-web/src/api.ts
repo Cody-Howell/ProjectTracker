@@ -139,6 +139,11 @@ export async function getAllDocuments(): Promise<Array<string>> {
   return JSON.parse(vals);
 }
 
+export async function getProjectDocs(s: string): Promise<Array<string>> {
+  const vals = await getResponse(`/documents?project=${s}`);
+  return JSON.parse(vals);
+}
+
 export async function getDocument(filename: string): Promise<string> {
   return await getResponse("/doc?filename=" + filename);
 }

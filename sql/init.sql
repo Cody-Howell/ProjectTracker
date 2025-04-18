@@ -38,21 +38,4 @@ create table sessions (
 
 insert into projects 
 	(projecttitle, projectstatus, professionalScore, personalScore, developmentScore, difficultyScore, hoursexpected, expecteddate, startDate, percentComplete) values 
-	('Lorem Project', 'Planning', 67, 30, 40, 14, 20, '2025-04-01 15:00:00', '2025-03-01 15:00:00', 0);
-insert into projects 
-	(projecttitle, projectstatus, professionalScore, personalScore, developmentScore, difficultyScore, hoursexpected, expecteddate, startDate, percentComplete) values 
-	('Project 2', 'In Progress', 67, 30, 40, 14, 20, '2025-04-10 15:00:00', '2025-03-20 15:00:00', 15);
-insert into types (typeName, color) values ('Lorem', '#fe0000');
-insert into types (typeName, color) values ('Lorem 2', '#00ff00');
-insert into project_type (projectId, typeId) values (1, 1);
-insert into project_type (projectId, typeId) values (2, 1);
-insert into project_type (projectId, typeId) values (2, 2);
-insert into sessions 
-  (projectId, dateTracked, planningSeconds, implementingSeconds, debuggingSeconds, testingSeconds, documentationSeconds, additionalNotes) values 
-  (1, '2025-04-05 15:00:00', 1600, 300, 10, 1, 30, null);
-insert into sessions 
-  (projectId, dateTracked, planningSeconds, implementingSeconds, debuggingSeconds, testingSeconds, documentationSeconds, additionalNotes) values 
-  (2, '2025-04-05 15:00:00', 1600, 3040, 274, 1098, 30, null);
-insert into sessions 
-  (projectId, dateTracked, planningSeconds, implementingSeconds, debuggingSeconds, testingSeconds, documentationSeconds, additionalNotes) values 
-  (2, '2025-04-08 15:00:00', 400, 30, 300, 1098, 180, null);
+	('Local Circuit Builder', 'In Progress', 67, 30, 40, 14, 20, '2025-04-10 15:00:00', '2025-03-20 15:00:00', 15);

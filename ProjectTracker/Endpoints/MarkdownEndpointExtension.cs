@@ -6,11 +6,11 @@ public static class MarkdownEndpointExtension {
     public static WebApplication AddMarkdownEndpoints(this WebApplication app) {
         string folderPath = app.Configuration["folderPath"] ?? throw new Exception("Please specify the folder path.");
 
-        app.MapGet("/api/documents", (string projectName = "") => {
+        app.MapGet("/api/documents", (string project = "") => {
             string[] files = Directory.GetFiles(folderPath);
             IEnumerable<string> output = files.Select(a => Path.GetFileName(a));
-            if (projectName != "") {
-                output = output.Where(a => a.Contains(projectName.Replace(' ', '-')));
+            if (project != "") {
+                output = output.Where(a => a.Contains(project.Replace(' ', '-')));
             }
             return output;
         });

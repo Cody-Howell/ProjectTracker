@@ -136,7 +136,6 @@ export class SessionPage extends React.Component<Record<string, never>, SessionP
         <p>Select what project you're going to add your session to, and once selected, you can
           scroll to the bottom and review all the sessions you've done so far on this project.
         </p>
-        <button onClick={() => console.log(this.state)}>See State</button>
         <select value={this.state.projectId} onChange={this.updateProjectSelector}>
           <option value={undefined}></option>
           {this.state.projects.map((v: { id: number, projectTitle: string }, i) => <option key={i} value={v.id}>{v.projectTitle}</option>)}
