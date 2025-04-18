@@ -149,7 +149,7 @@ export async function getDocument(filename: string): Promise<string> {
 }
 
 export async function createDocument(filename: string, project: string): Promise<string> {
-  return await postResponse("/doc/new", {filename: filename, project: project});
+  return await postResponse(`/doc/new?filename=${filename}&project=${project}`, {});
 }
 
 export async function updateDocument(filename: string, text: string): Promise<string> {

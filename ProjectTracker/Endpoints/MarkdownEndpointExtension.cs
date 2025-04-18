@@ -27,7 +27,7 @@ public static class MarkdownEndpointExtension {
         });
 
         app.MapPost("/api/doc/new", (string filename, string project) => {
-            string finalName = project.Replace(' ', '-') + "_" + filename.Replace(' ', '-') + ".md";
+            string finalName = filename.Replace(' ', '-') + "_" + project.Replace(' ', '-') + ".md";
 
             // Create file here, then close the stream
             File.Create(Path.Combine(folderPath, finalName)).Close();

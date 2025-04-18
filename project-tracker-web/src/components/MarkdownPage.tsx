@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { getAllProjectNames, getDocument, getProjectDocs, updateDocument } from '../api';
+import { createDocument, getAllProjectNames, getDocument, getProjectDocs, updateDocument } from '../api';
 import markdownit from 'markdown-it';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
@@ -18,7 +18,8 @@ type MarkdownPageState = {
   currentFile: string | null,
   currentText: string | null,
   displayMarkdown: boolean, 
-  updatedApi: boolean
+  updatedApi: boolean, 
+  newTitle: string
 }
 
 export class MarkdownPage extends React.Component<Record<string, never>, MarkdownPageState> {
@@ -29,9 +30,11 @@ export class MarkdownPage extends React.Component<Record<string, never>, Markdow
     currentFile: null,
     currentText: null,
     displayMarkdown: false, 
-    updatedApi: false
+    updatedApi: false, 
+    newTitle: ""
   }
 
+  //#region Functions
   async componentDidMount(): Promise<void> {
     this.setState({ projects: await getAllProjectNames() })
   }
@@ -59,6 +62,19 @@ export class MarkdownPage extends React.Component<Record<string, never>, Markdow
     this.setState({ currentFile: filename, currentText: fileText });
   }
 
+  createNewDoc = async (): Promise<void> => {
+    const projects: Array<{ id: number, projectTitle: string }> = this.state.projects;
+    const projName: string | undefined = projects.find((a) => a.id == this.state.projectId)?.projectTitle;
+
+    if (projName === undefined) return;
+
+    const newName = (await createDocument(projName, this.state.newTitle)).replace(/"/g, ' ');
+
+    const files: Array<string> = this.state.fileNames;
+    files.push(newName);
+    this.setState({fileNames: files, newTitle: ""});
+  }
+
   toggleDisplay = (): void => {
     this.setState({ displayMarkdown: !this.state.displayMarkdown });
   }
@@ -76,6 +92,11 @@ export class MarkdownPage extends React.Component<Record<string, never>, Markdow
       this.setState({updatedApi: false});
     }, 2000);
   }
+
+  updateNewTitle = (e: ChangeEvent<HTMLInputElement>): void => {
+    this.setState({newTitle: e.target.value});
+  }
+  //#endregion
 
   render() {
     const md = markdownit({
@@ -102,10 +123,14 @@ export class MarkdownPage extends React.Component<Record<string, never>, Markdow
         </select>
         <br />
         {this.state.fileNames.length > 0 && (
-          <><select value={this.state.currentFile ?? undefined} onChange={this.updateCurrentProject}>
+          <>
+          <select value={this.state.currentFile ?? undefined} onChange={this.updateCurrentProject}>
             <option value={undefined}></option>
             {this.state.fileNames.map((v: string, i) => <option key={i} value={v}>{v}</option>)}
-          </select><br /></>
+          </select><br />
+          <input type='text' value={this.state.newTitle} onChange={this.updateNewTitle} />
+          <button onDoubleClick={this.createNewDoc}>Create New Doc (double-click)</button>
+          </>
         )}
 
 
