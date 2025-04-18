@@ -30,7 +30,7 @@ public static class MarkdownEndpointExtension {
             string finalName = filename.Replace(' ', '-') + "_" + project.Replace(' ', '-') + ".md";
 
             // Create file here, then close the stream
-            File.Create(Path.Combine(folderPath, finalName)).Close();
+            File.Create(Path.Combine(folderPath, finalName.Trim())).Close();
             return Results.Ok(finalName);
         });
 

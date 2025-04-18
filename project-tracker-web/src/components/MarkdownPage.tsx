@@ -68,11 +68,9 @@ export class MarkdownPage extends React.Component<Record<string, never>, Markdow
 
     if (projName === undefined) return;
 
-    const newName = (await createDocument(projName, this.state.newTitle)).replace(/"/g, ' ');
+    await createDocument(projName, this.state.newTitle);
 
-    const files: Array<string> = this.state.fileNames;
-    files.push(newName);
-    this.setState({fileNames: files, newTitle: ""});
+    window.location.reload();
   }
 
   toggleDisplay = (): void => {
