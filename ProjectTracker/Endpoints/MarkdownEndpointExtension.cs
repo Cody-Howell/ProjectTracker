@@ -16,9 +16,8 @@ public static class MarkdownEndpointExtension {
             }
         });
 
-        // There's some massive switch going on here and I can't figure out how to call the service correctly
         app.MapPost("/api/doc/new", (string project, string filename, MarkdownService mdService) => {
-            string finalName = mdService.CreateNewDocument(filename, project);
+            string finalName = mdService.CreateNewDocument(project, filename);
             return Results.Ok(finalName);
         });
 

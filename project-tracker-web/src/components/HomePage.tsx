@@ -2,6 +2,7 @@ import React, { ChangeEvent } from 'react';
 import { addTypeToProject, createProject, getAllProjects, getAllTypes, removeTypeFromProject, updateProject } from '../api';
 import func from '../function.ts';
 import { TimeAfter } from '../funcs/TimeAfter.ts';
+import { GetInputString } from '../funcs/GetInputString.tsx';
 
 export class HomePage extends React.Component<Record<string, never>, { projects: Array<Project>, newProjectTitle: string, tags: Array<ProjectType> }> {
   state = {
@@ -191,6 +192,3 @@ export class HomePage extends React.Component<Record<string, never>, { projects:
   }
 }
 
-function GetInputString(date: Date): string {
-  return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-}

@@ -28,7 +28,6 @@ public class MarkdownService {
         return File.ReadAllText(fullPath);
     }
 
-    // See note in MarkdownExtension call
     public string CreateNewDocument(string project, string filename) {
         string finalName = project.Replace(' ', '-') + "_" + filename.Replace(' ', '-') + ".md";
         File.Create(Path.Combine(_folderPath, finalName.Trim())).Close();
