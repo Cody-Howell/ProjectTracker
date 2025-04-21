@@ -1,3 +1,8 @@
+/**
+ * Returns the number of days after the given date (with a floor at 0).
+ * @param date Date to check
+ * @returns Number of days after a date (or 0)
+ */
 export function TimeAfter(date: Date): number {
   const current = new Date();
   const timeDifferenceMs = current.getTime() - date.getTime();

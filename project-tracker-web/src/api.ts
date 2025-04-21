@@ -108,9 +108,9 @@ export async function updateType(type: ProjectType): Promise<void> {
 export async function deleteType(type: ProjectType): Promise<void> {
   await postResponse("/types/delete", type);
 }
-//#endregion 
+//#endregion
 //#region Sessions
-export async function getAllProjectNames(): Promise<Array<{id: number, projectTitle: string}>> {
+export async function getAllProjectNames(): Promise<Array<{ id: number; projectTitle: string }>> {
   const vals = await getResponse("/projects/names");
   return JSON.parse(vals);
 }
@@ -148,7 +148,7 @@ export async function getDocument(filename: string): Promise<string> {
   return await getResponse("/doc?filename=" + filename);
 }
 
-export async function createDocument(filename: string, project: string): Promise<string> {
+export async function createDocument(project: string, filename: string): Promise<string> {
   return await postResponse(`/doc/new?filename=${filename}&project=${project}`, {});
 }
 
@@ -156,12 +156,23 @@ export async function updateDocument(filename: string, text: string): Promise<st
   return await postResponse("/doc", { Filename: filename, MDtext: text });
 }
 
-
 //#endregion
 //#region Projects
-export async function createProject(project: Project): Promise<Project> {
-  const vals = await postResponse("/project", { project: project });
-  return JSON.parse(vals);
+export async function createProject(project: string): Promise<void> {
+  await postResponse(`/project?project=${project}`, {});
 }
+
+export async function updateProject(project: Project): Promise<void> {
+  await patchResponse(`/project`, project);
+}
+
+export async function addTypeToProject(projectId: number, typeId: number): Promise<void> {
+  await postResponse(`/project/type?pId=${projectId}&tId=${typeId}`, {});
+}
+
+export async function removeTypeFromProject(projectId: number, typeId: number): Promise<void> {
+  await deleteResponse(`/project/type?pId=${projectId}&tId=${typeId}`);
+}
+
 
 //#endregion

@@ -1,6 +1,7 @@
 using ProjectTracker;
 using ProjectTracker.Classes;
 using ProjectTracker.Endpoints;
+using ProjectTracker.Services;
 using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddSingleton<IDbConnection>(provider => {
 });
 
 builder.Services.AddSingleton<DBService>();
+builder.Services.AddSingleton<MarkdownService>();
 
 var app = builder.Build();
 
@@ -24,6 +26,7 @@ app.MapGet("/api/health", () => "Hello");
 
 app.AddMarkdownEndpoints()
     .AddProjectEndpoints()
+    .AddTypeEndpoints()
     .AddSessionEndpoints();
 
 app.MapFallbackToFile("index.html");

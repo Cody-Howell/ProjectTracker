@@ -1,37 +1,33 @@
 ﻿using ProjectTracker;
 using ProjectTracker.Classes;
-using System.Drawing;
+using ProjectTracker.Services;
 
 public static class ProjectEndpointExtensions { 
     public static WebApplication AddProjectEndpoints(this WebApplication app) {
         app.MapGet("/api/projects/names", (DBService service) => service.GetAllProjectNames());
         app.MapGet("/api/projects", (DBService service) => service.GetAllProjects());
-        app.MapGet("/api/types", (DBService service) => service.GetAllTypes());
         app.MapGet("/api/project", (int id, DBService service) => service.GetProject(id));
 
 
-        app.MapPost("/api/project", (Project project, DBService service) => {
+        app.MapPost("/api/project", (string project, DBService service, MarkdownService mdService) => {
             service.CreateProject(project);
+            mdService.CreateNewDocument(project, "Default");
             return Results.Created();
         });
 
-        app.MapPost("/api/types", (ProjectType type, DBService service) => {
-            service.CreateType(type);
-            return Results.Created();
-        });
-
-        app.MapPatch("/api/types", (ProjectType type, DBService service) => {
-            service.UpdateType(type);
+        app.MapPatch("/api/project", (Project project, DBService service) => {
+            service.UpdateProject(project);
             return Results.Ok();
         });
 
-        app.MapPost("/api/types/delete", (ProjectType type, DBService service) => {
-            service.DeleteType(type);
+        app.MapPost("/api/project/type", (int pId, int tId, DBService service) => {
+            service.AddTypeToProject(pId, tId);
             return Results.Ok();
         });
 
-        app.MapPatch("/api/projects", (Project project, DBService service) => {
-            service.UpdateProjectStatus(project);
+
+        app.MapDelete("/api/project/type", (int pId, int tId, DBService service) => {
+            service.RemoveTypeFromProject(pId, tId);
             return Results.Ok();
         });
 

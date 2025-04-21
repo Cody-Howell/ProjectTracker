@@ -69,3 +69,14 @@ th {
 .sessionDisplay p {
   margin: 8px 0;
 }
+
+.scoreValues {
+  width: 40px;
+  padding: 5px;
+}
+
+#tableContainer {
+  display: block;
+  width: 120%;
+  height: 100%;
+}

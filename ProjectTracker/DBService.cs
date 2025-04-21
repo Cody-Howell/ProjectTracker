@@ -6,21 +6,17 @@ namespace ProjectTracker;
 
 public class DBService(IDbConnection conn) {
     #region Projects
-    public void CreateProject(Project project) {
+    public void CreateProject(string project) {
+        DateTime now = DateTime.Now;
+        DateTime month = now.AddMonths(1);
         string projectAddition = """"
             insert into projects 
-            (projecttitle, projectstatus, scoreprofessional, scorepersonal, scoredevelopment, scoredifficulty, hoursexpected, expecteddate, startdate) 
-            values (@projecttitle, @projectstatus, @scoreprofessional, @scorepersonal, @scoredevelopment, @scoredifficulty, @hoursexpected, @expecteddate, @startdate)
+            (percentcomplete, projectTitle, projectstatus, professionalscore, personalscore, developmentscore, difficultyscore, hoursexpected, expecteddate, startdate) 
+            values (0, @project, 'Planning', 0, 0, 0, 0, 10, @month, @now)
             returning id
             """";
         // Added to the query above to return the id of the inserted project
-        int newId = conn.QuerySingle<int>(projectAddition, new { project });
-        foreach (int id in project.Types.Select(a => a.Id)) {
-            string taskAddition = """"
-                insert into project_type (projectId, typeId) values (@newId, @typeId)
-                """";
-            conn.Execute(taskAddition, new { newId, typeId = id });
-        }
+        int newId = conn.QuerySingle<int>(projectAddition, new { project, now, month });
     }
 
     public IEnumerable<IdAndTitleDTO> GetAllProjectNames() {
@@ -32,7 +28,7 @@ public class DBService(IDbConnection conn) {
 
     public IEnumerable<Project> GetAllProjects() {
         string getProjects = """"
-            select * from projects
+            select * from projects p order by p.projectTitle
             """";
         IEnumerable<Project> projects = conn.Query<Project>(getProjects);
         foreach (Project p in projects) {
@@ -61,13 +57,21 @@ public class DBService(IDbConnection conn) {
         return p;
     }
 
-    public void UpdateProjectStatus(Project project) {
+    public void UpdateProject(Project project) {
         string update = """"
-            update projects p set projectstatus = @ProjectStatus, 
+            update projects p set 
+                projectstatus = @ProjectStatus, 
+                professionalscore = @ProfessionalScore, 
+                personalscore = @PersonalScore, 
+                developmentscore = @DevelopmentScore, 
+                difficultyscore = @DifficultyScore, 
+                hoursexpected = @HoursExpected, 
+                expecteddate = @ExpectedDate, 
+                startdate = @StartDate,
                 percentcomplete = @PercentComplete 
                 where p.id = @Id
             """";
-        conn.Execute(update, new { project.Id, project.ProjectStatus, project.PercentComplete });
+        conn.Execute(update, project);
     }
 
     public int GetTotalSeconds(int projectId) {
@@ -78,6 +82,21 @@ public class DBService(IDbConnection conn) {
             group by projectid;
             """";
         return conn.QuerySingle<int>(allSeconds, new { projectId });
+    }
+
+    public void AddTypeToProject(int projectId, int typeId) {
+        string addType = """"
+            insert into project_type (projectId, typeId) values (@projectId, @typeId)
+            """";
+        conn.Execute(addType, new { projectId, typeId });
+    }
+
+
+    public void RemoveTypeFromProject(int projectId, int typeId) {
+        string removeType = """"
+            delete from project_type where projectId = @projectId and typeId = @typeId
+            """";
+        conn.Execute(removeType, new { projectId, typeId });
     }
     #endregion
 

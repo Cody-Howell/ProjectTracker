@@ -6,7 +6,7 @@ import javascript from 'highlight.js/lib/languages/javascript';
 import csharp from 'highlight.js/lib/languages/csharp';
 
 hljs.registerLanguage('javascript', javascript);
-hljs.registerLanguage('javascript', csharp);
+hljs.registerLanguage('csharp', csharp);
 
 type MarkdownPageState = {
   projects: Array<{
@@ -22,7 +22,7 @@ type MarkdownPageState = {
   newTitle: string
 }
 
-export class MarkdownPage extends React.Component<Record<string, never>, MarkdownPageState> {
+export default class MarkdownPage extends React.Component<Record<string, never>, MarkdownPageState> {
   state = {
     projects: [],
     projectId: 0,
@@ -126,7 +126,7 @@ export class MarkdownPage extends React.Component<Record<string, never>, Markdow
             <option value={undefined}></option>
             {this.state.fileNames.map((v: string, i) => <option key={i} value={v}>{v}</option>)}
           </select><br />
-          <input type='text' value={this.state.newTitle} onChange={this.updateNewTitle} />
+          <input type='text' value={this.state.newTitle} onChange={this.updateNewTitle} placeholder='File title WITHOUT .md'/>
           <button onDoubleClick={this.createNewDoc}>Create New Doc (double-click)</button>
           </>
         )}

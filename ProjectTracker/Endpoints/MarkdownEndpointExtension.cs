@@ -1,41 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ProjectTracker.Classes;
-using System.Data;
+﻿using ProjectTracker.Classes;
+using ProjectTracker.Services;
 
 public static class MarkdownEndpointExtension {
     public static WebApplication AddMarkdownEndpoints(this WebApplication app) {
-        string folderPath = app.Configuration["folderPath"] ?? throw new Exception("Please specify the folder path.");
-
-        app.MapGet("/api/documents", (string project = "") => {
-            string[] files = Directory.GetFiles(folderPath);
-            IEnumerable<string> output = files.Select(a => Path.GetFileName(a));
-            if (project != "") {
-                output = output.Where(a => a.Contains(project.Replace(' ', '-')));
-            }
-            return output;
+        app.MapGet("/api/documents", (MarkdownService mdService, string project = "") => {
+            return mdService.GetDocuments(project);
         });
 
-        app.MapGet("/api/doc", (string filename) => {
-            string fullPath = Path.Combine(folderPath, filename);
-
-            if (!File.Exists(fullPath)) {
+        app.MapGet("/api/doc", (string filename, MarkdownService mdService) => {
+            try {
+                string content = mdService.GetDocumentContent(filename);
+                return Results.Content(content, "text/plain");
+            } catch (FileNotFoundException) {
                 return Results.NotFound("File not found.");
             }
-
-            string content = File.ReadAllText(fullPath);
-            return Results.Content(content, "text/plain");
         });
 
-        app.MapPost("/api/doc/new", (string filename, string project) => {
-            string finalName = filename.Replace(' ', '-') + "_" + project.Replace(' ', '-') + ".md";
-
-            // Create file here, then close the stream
-            File.Create(Path.Combine(folderPath, finalName.Trim())).Close();
+        // There's some massive switch going on here and I can't figure out how to call the service correctly
+        app.MapPost("/api/doc/new", (string project, string filename, MarkdownService mdService) => {
+            string finalName = mdService.CreateNewDocument(filename, project);
             return Results.Ok(finalName);
         });
 
-        app.MapPost("api/doc", (MarkdownDocument doc) => {
-            File.WriteAllText(Path.Combine(folderPath, doc.Filename), doc.MDText);
+        app.MapPost("/api/doc", (MarkdownDocument doc, MarkdownService mdService) => {
+            mdService.SaveDocument(doc);
             return Results.Ok();
         });
 

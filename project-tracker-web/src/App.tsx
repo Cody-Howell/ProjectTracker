@@ -1,10 +1,11 @@
 import React from 'react'
 import './App.css'
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
+import loadable from '@loadable/component'
 import { HomePage } from './components/HomePage'
-import { MarkdownPage } from './components/MarkdownPage'
 import { SettingsPage } from './components/SettingsPage'
 import { SessionPage } from './components/SessionPage'
+const MarkdownPage = loadable(() => import('./components/MarkdownPage'));
 
 class App extends React.Component {
   render() {

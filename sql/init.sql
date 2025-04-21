@@ -8,8 +8,8 @@ create table projects (
   developmentScore int not null, 
   difficultyScore int not null, 
   hoursExpected int not null, 
-  startDate timestamp not null,
-  expectedDate timestamp not null
+	startdate date not null,
+	expecteddate date not null
 );
 
 create table types (
@@ -38,4 +38,4 @@ create table sessions (
 
 insert into projects 
 	(projecttitle, projectstatus, professionalScore, personalScore, developmentScore, difficultyScore, hoursexpected, expecteddate, startDate, percentComplete) values 
-	('Local Circuit Builder', 'In Progress', 67, 30, 40, 14, 20, '2025-04-10 15:00:00', '2025-03-20 15:00:00', 15);
+	('Local Circuit Builder', 'In Progress', 67, 30, 40, 14, 20, '2025-04-10', '2025-03-20', 15);
