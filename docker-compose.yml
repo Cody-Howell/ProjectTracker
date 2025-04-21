@@ -10,24 +10,24 @@ services:
       POSTGRES_DB: projecttrackerdb
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
-      # - ./dbdata:/var/lib/postgresql/data
+      - ./dbdata:/var/lib/postgresql/data
     ports:
       - 5432:5432
     # command: ["postgres", "-c", "log_statement=all"] # Enables verbose logging
 
     
-  # api:  
-  #   build: 
-  #     context: ./ProjectTracker
-  #   restart: always
-  #   environment:
-  #     - DOTNET_DATABASE_STRING=Host=db;Database=projecttrackerdb;Username=cody;Password=123456abc;
-  #     - folderPath=/data
-  #   volumes:
-  #     - ./apidata:/data
-  #   depends_on:
-  #     - db
-  #   ports:
-  #     - 4110:8080
+  api:  
+    build: 
+      context: ./ProjectTracker
+    restart: always
+    environment:
+      - DOTNET_DATABASE_STRING=Host=db;Database=projecttrackerdb;Username=cody;Password=123456abc;
+      - folderPath=/data
+    volumes:
+      - ./apidata:/data
+    depends_on:
+      - db
+    ports:
+      - 4110:8080
 
 
