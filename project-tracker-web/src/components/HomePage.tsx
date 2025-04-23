@@ -130,6 +130,9 @@ export class HomePage extends React.Component<Record<string, never>, { projects:
 
         <input type='text' value={this.state.newProjectTitle} onChange={this.updateProjectTitle} placeholder='Create Project' />
         <button onDoubleClick={this.createProject}>Create (double-click)</button>
+        <br/>
+        <br/>
+        <p>Current count: {this.state.projects.length}</p>
 
         <hr />
         <div id='tableContainer'>

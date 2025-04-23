@@ -117,7 +117,8 @@ export default class MarkdownPage extends React.Component<Record<string, never>,
 
         <select value={this.state.projectId} onChange={this.updateProjectSelector}>
           <option value={undefined}></option>
-          {this.state.projects.map((v: { id: number, projectTitle: string }, i) => <option key={i} value={v.id}>{v.projectTitle}</option>)}
+          {this.state.projects.sort(
+            (a: { id: number, projectTitle: string }, b: { id: number, projectTitle: string }) => a.projectTitle.localeCompare(b.projectTitle)).map((v: { id: number, projectTitle: string }, i) => <option key={i} value={v.id}>{v.projectTitle}</option>)}
         </select>
         <br />
         {this.state.fileNames.length > 0 && (
