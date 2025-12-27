@@ -1,19 +1,18 @@
 services:
-
   db:
-    image: postgres
-    restart: always
-    shm_size: 128mb
-    environment:
-      POSTGRES_PASSWORD: 123456abc
-      POSTGRES_USER: cody
-      POSTGRES_DB: projecttrackerdb
-    volumes:
-      - ./sql:/docker-entrypoint-initdb.d
-      - ./dbdata:/var/lib/postgresql/data
-    # ports:
-    #   - 5432:5432
-    # command: ["postgres", "-c", "log_statement=all"] # Enables verbose logging
+   image: postgres
+   restart: always
+   shm_size: 128mb
+   environment:
+     POSTGRES_PASSWORD: 123456abc
+     POSTGRES_USER: cody
+     POSTGRES_DB: projecttrackerdb
+   volumes:
+     - ./sql:/docker-entrypoint-initdb.d
+     - ./dbdata:/var/lib/postgresql/data
+   # ports:
+   #   - 5432:5432
+   # command: ["postgres", "-c", "log_statement=all"] # Enables verbose logging
 
     
   api:  
